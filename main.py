@@ -1,13 +1,20 @@
 from utils import *
-from sklearn import tree
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 from random import randint, random
 
-def main():
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import AdaBoostClassifier
+
+import argparse
+
+def main(model):
     training_features, training_labels, test_features, test_labels, costs = load_data()
     data = [training_features, training_labels, test_features, test_labels, costs]
-    clf = tree.DecisionTreeClassifier()
+    clf = model()
     
     pop = population(20, training_features[0])
     
@@ -17,7 +24,7 @@ def main():
         pop_fitness = avg_fitness(pop, clf, data)
         fitness_history.append(pop_fitness)
         
-        if pop_fitness < 40:
+        if pop_fitness <= 30:
             break
 
     print("Avg fitness history: ", fitness_history)
@@ -122,4 +129,31 @@ def feature_selection_cost(selected_features, costs):
     return total_cost
 
 if __name__ == "__main__":
-    main()
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--model', default='dts', type=str, help='''
+    dts -> Decision Tree
+    lr -> LogisticRegression
+    gnb -> GaussianNB
+    knn -> KNeighborsClassifier
+    ada -> AdaBoostClassifier
+    ''')
+
+    args = parser.parse_args()
+
+    model_name = args.model
+    model = None
+
+    if model_name == 'dst':
+        model = DecisionTreeClassifier
+    elif model_name == 'lr':
+        model = LogisticRegression
+    elif model_name == 'gnb':
+        model = GaussianNB
+    elif model_name == 'knn':
+        model = KNeighborsClassifier
+    elif model_name == 'ada':
+        model = AdaBoostClassifier
+
+    main(model)
