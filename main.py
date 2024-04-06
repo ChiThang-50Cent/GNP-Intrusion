@@ -14,7 +14,7 @@ import argparse
 def main(model):
     training_features, training_labels, test_features, test_labels, costs = load_data()
     data = [training_features, training_labels, test_features, test_labels, costs]
-    clf = model()
+    clf = model
     
     pop = population(20, training_features[0])
     
@@ -146,14 +146,14 @@ if __name__ == "__main__":
     model = None
 
     if model_name == 'dst':
-        model = DecisionTreeClassifier
+        model = DecisionTreeClassifier()
     elif model_name == 'lr':
-        model = LogisticRegression
+        model = LogisticRegression(solver='saga')
     elif model_name == 'gnb':
-        model = GaussianNB
+        model = GaussianNB()
     elif model_name == 'knn':
-        model = KNeighborsClassifier
+        model = KNeighborsClassifier()
     elif model_name == 'ada':
-        model = AdaBoostClassifier
+        model = AdaBoostClassifier()
 
     main(model)
