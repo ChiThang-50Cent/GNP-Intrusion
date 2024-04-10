@@ -10,6 +10,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import AdaBoostClassifier
 
 import argparse
+import numpy as np
 
 def main(model):
     training_features, training_labels, test_features, test_labels, costs = load_data()
@@ -32,13 +33,8 @@ def main(model):
     # fittest_results(clf, training_features, training_labels, test_features, test_labels, costs)
     
 def individual(length):
-    # create an individual, which is binary repr. of selected features
-    selected_features = [0] * len(length)
-    
-    for i in range(len(selected_features)):
-        selected_features[i] = randint(0, 1)
-        
-    return selected_features
+    # create an individual, which is binary repr. of selected feature
+    return np.random.randint(2, size=len(length))
     
 def population(count, length):
     # create 'count' number of individuals

@@ -17,7 +17,6 @@ def get_class_miss_percentages(true_labels, predicted_labels):
     c0_tot = 0
     c1_missed = 0
     c1_tot = 0
-
     
     for i in range(len(true_labels)):
         if true_labels[i] == 0:
