@@ -52,4 +52,4 @@ if __name__ == "__main__":
     data = load_data()
     
     for da in data:
-        print(da.shape)
+        print(type(da))

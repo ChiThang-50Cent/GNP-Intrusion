@@ -25,6 +25,7 @@ def main(model):
         pop_fitness = avg_fitness(pop, clf, data)
         fitness_history.append(pop_fitness)
         
+        print('#'*10, pop_fitness, '#'*10)
         if pop_fitness <= 30:
             break
 
@@ -81,7 +82,7 @@ def avg_fitness(pop, clf, data):
     
 def evolve(pop, clf, data, retain_percentage=0.50, random_select=0.05, mutate_prob=0.01):
     f_values = [(fitness(i, clf, data), i) for i in pop]
-    individuals = [i[1] for i in sorted(f_values)]
+    individuals = [i[1] for i in sorted(f_values, key=lambda x: x[0])]
     retain_length = int(len(pop) * retain_percentage)
     parents = individuals[:retain_length]
     
@@ -109,20 +110,14 @@ def evolve(pop, clf, data, retain_percentage=0.50, random_select=0.05, mutate_pr
             male = parents[male_index]
             female = parents[female_index]
             half = len(male) // 2
-            child = male[:half] + female[half:]
+            child = np.concatenate([male[:half], female[half:]])
             children.append(child)
     
     parents.extend(children)
     return parents
     
 def feature_selection_cost(selected_features, costs):
-    total_cost = 0
-    
-    for i in range(len(selected_features)):
-        if selected_features[i] == 1:
-            total_cost += costs[i]
-            
-    return total_cost
+    return sum([c for s, c in zip(selected_features, costs) if s == 1])
 
 if __name__ == "__main__":
 

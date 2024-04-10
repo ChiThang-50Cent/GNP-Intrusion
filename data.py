@@ -61,4 +61,4 @@ def load_data():
 
     costs = np.ones((X.shape[1],))
 
-    return X_train, y_train, X_test, y_test, costs
+    return X_train, y_train.values, X_test, y_test.values, costs
