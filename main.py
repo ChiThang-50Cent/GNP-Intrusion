@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--model', default='dts', type=str, help='''
+    parser.add_argument('--model', default='dst', type=str, help='''
     dts -> Decision Tree
     lr -> LogisticRegression
     gnb -> GaussianNB
