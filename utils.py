@@ -1,4 +1,4 @@
-import pandas as pd
+import data as d
 
 def get_selected_features(selected_features, all_features):
     list_id = [i for i, e in enumerate(selected_features) if e == 1]
@@ -44,25 +44,13 @@ def get_class_miss_percentages(true_labels, predicted_labels):
     
 def load_data():
 
-    train = pd.read_csv('./train.csv')
-    training_data = train.values
-    training_features = training_data[:, :-1]
-    training_labels = training_data[:, -1]
-
-    test = pd.read_csv('./test.csv')
-    test_data = test.values       
-    test_features = test_data[:, :-1]
-    test_labels = test_data[:, -1]
-        
-    cost = pd.read_csv('./cost.csv')
-    costs = cost.values[0]
-        
+    training_features, training_labels, test_features, test_labels, costs = d.load_data()
+    
     return training_features, training_labels, test_features, test_labels, costs
 
 
 if __name__ == "__main__":
     data = load_data()
-    d = data[0]
-
-    list_ind = [i for i, e in enumerate([0,1,1]) if e == 1]
-    print(d[:, list_ind].shape)
+    
+    for da in data:
+        print(da.shape)
