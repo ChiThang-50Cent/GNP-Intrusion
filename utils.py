@@ -1,4 +1,5 @@
 import data as d
+import numpy as np
 
 def get_selected_features(selected_features, all_features):
     list_id = [i for i, e in enumerate(selected_features) if e == 1]
@@ -43,13 +44,14 @@ def get_class_miss_percentages(true_labels, predicted_labels):
     
 def load_data():
 
-    training_features, training_labels, test_features, test_labels, costs = d.load_data()
+    training_features, training_labels = d.load_data('./UNSW_NB15_training-set.csv')
+    test_features, test_labels = d.load_data('./UNSW_NB15_testing-set.csv')
+
+    costs = np.ones(shape=(training_features.shape[1], ))
     
     return training_features, training_labels, test_features, test_labels, costs
 
 
 if __name__ == "__main__":
-    data = load_data()
-    
-    for da in data:
-        print(type(da))
+    costs = np.ones(shape=(100, ))
+    print(costs[0])

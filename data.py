@@ -1,14 +1,10 @@
 import pandas as pd
 import numpy as np
 
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 
-
-def load_data():
-    df = pd.read_csv("./UNSW_NB15_training-set.csv")
+def load_data(path):
+    df = pd.read_csv(path)
 
     list_drop = ["id", "attack_cat"]
     df.drop(list_drop, axis=1, inplace=True)
@@ -46,19 +42,19 @@ def load_data():
     X = df.iloc[:, :-1]
     y = df.iloc[:, -1]
 
-    ct = ColumnTransformer(
-        transformers=[("encoder", OneHotEncoder(), [1, 2, 3])], remainder="passthrough"
-    )
-    X = np.array(ct.fit_transform(X))
+    for col in list(X.select_dtypes(exclude=np.number).columns):
+        lb = LabelEncoder()
+        lb.fit(X[col])
+        X[col] = lb.transform(X[col])
 
     sc = StandardScaler()
+    X = sc.fit_transform(X)
 
-    X[:, 18:] = sc.fit_transform(X[:, 18:])
+    return (X, y.values)
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=0, stratify=y
-    )
+if __name__ == "__main__":
+    for x in ['./UNSW_NB15_training-set.csv', './UNSW_NB15_testing-set.csv']:
+        X, y = load_data(x)
+        print(type(X), type(y))
 
-    costs = np.ones((X.shape[1],))
 
-    return X_train, y_train.values, X_test, y_test.values, costs
